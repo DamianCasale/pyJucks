@@ -6,7 +6,8 @@
     <script src='/static/js/nunjucks.js'></script>
   </head>
   <body>
-    {% block content %}{% endblock %}
+    <div id="theNavbar">{% block navbar %}{% endblock %}</div>
+    <div id="theMainContent">{% block content %}{% endblock %}</div>
   </body>
   <script src='/static/js/main.js'></script>
 </html>
