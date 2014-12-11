@@ -1,6 +1,6 @@
 import json
 
-from flask import render_template, request
+from flask import render_template, request, Response
 from app import app
 
 @app.route('/')
@@ -8,8 +8,9 @@ def index():
 
 
 	pageInfo = {
-				'template': 'index.html',
-				'replaces': 'theMainContent',
+				'layout':	'layout_default.html',
+				'template': 'page_index.html',
+				'replaces': '#theMainContent',
 				'data' : {
 					'title':		'Playing with Jinja & Nunjucks',
 					'renderedBy':	'Flask and Jinja2',
@@ -17,10 +18,13 @@ def index():
 					'aCounter':		0}}
 
 	if request.is_xhr:
-		return json.dumps(pageInfo)
+		pageInfo['data']['renderedBy']	= 'Nunjucks';
+		pageInfo['data']['anEvent'] 	= 'Replaced in browser';
+		return Response( json.dumps(pageInfo), mimetype='text/json')
 
 	else:
 		return render_template( pageInfo['template'], 
+								layout		= pageInfo['layout'],
 								title		= pageInfo['data']['title'],
 								renderedBy	= pageInfo['data']['renderedBy'],
 								anEvent		= pageInfo['data']['anEvent'],
@@ -31,8 +35,9 @@ def page1():
 
 
 	pageInfo = {
-			'template':	'page1.html',
-		    'replaces':	'theMainContent',
+			'layout':	'layout_default.html',
+			'template':	'page_page1.html',
+		    'replaces':	'#theMainContent',
 		    'data': {
 					'title':		'Playing with Jinja & Nunjucks',
 					'renderedBy':	'Flask and Jinja2',
@@ -40,10 +45,14 @@ def page1():
 					'aCounter':		0}}
 
 
-	if request.is_xhr: 
-		return json.dumps(pageInfo)
+	if request.is_xhr:
+		pageInfo['data']['renderedBy']	= 'Nunjucks';
+		pageInfo['data']['anEvent'] 	= 'Replaced in browser';
+		return Response( json.dumps(pageInfo), mimetype='text/json')
+
 	else: 
-		return render_template( pageInfo['template'], 
+		return render_template( pageInfo['template'],
+								layout		= pageInfo['layout'],
 								title		= pageInfo['data']['title'],
 								renderedBy	= pageInfo['data']['renderedBy'],
 								anEvent		= pageInfo['data']['anEvent'],

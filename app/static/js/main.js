@@ -1,31 +1,34 @@
 var theCounter	= 1;
+var nunEnv		= nunjucks.configure('static/templates');
 
-var theButton	= document.getElementById('theButton');
-var toReplace	= document.getElementById('toReplace');
+var attatchEvents = function () {
+	
+	if ($('#theButton')) {
+		$('#theButton').on('click', function() {
+			$('#toReplace').html( nunEnv.render('partial_first.html', { 'renderedBy':'Nunjucks',
+																'anEvent':' Replaced in browser', 
+																'aCounter':theCounter }));
+			theCounter++;
+		});
+	}
+}
 
-var nunEnv		= nunjucks.configure('static/partials');
-
-
-theButton.addEventListener('click', function() {
-	var rendered		= nunEnv.render('first.html', { 'renderedBy':'Nunjucks',
-														'anEvent':' Replaced in browser', 
-														'aCounter':theCounter });
-	toReplace.innerHTML	= rendered;
-	theCounter++;
-});
-
-
-
-
-
+attatchEvents();
 
 
 $('.ajaxableLink').on('click', function(e){
 	e.preventDefault();
-	alert("Ajaxable link clicked : " + this.href);
 
 	$.get(this.href, function( data ){
-		alert( "The ajax request returned : " + data );
+
+		/* set the layout to the non layout 
+		*  so we dont pull in a whole page 
+		*  into a part of the page
+		*/
+		data.data.layout = "layout_none.html";
+
+		$(data.replaces).html( nunEnv.render( data.template, data.data) );
+		attatchEvents();
 	});
 
 });
