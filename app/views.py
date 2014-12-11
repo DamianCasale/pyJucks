@@ -41,12 +41,8 @@ def page1():
 
 
 	if request.is_xhr: 
-		print "XHR REQUEST"
-		#here we should send back only the json describing the page to be rendered via Nunjucks
 		return json.dumps(pageInfo)
 	else: 
-		print "NON XHR"
-		#here should be the normal page render
 		return render_template( pageInfo['template'], 
 								title		= pageInfo['data']['title'],
 								renderedBy	= pageInfo['data']['renderedBy'],
