@@ -1,22 +1,7 @@
-var theCounter	= 1;
 var nunEnv		= nunjucks.configure('static/templates');
 
-var attatchEvents = function () {
-	
-	if ($('#theButton')) {
-		$('#theButton').on('click', function() {
-			$('#toReplace').html( nunEnv.render('partial_first.html', { 'renderedBy':'Nunjucks',
-																'anEvent':' Replaced in browser', 
-																'aCounter':theCounter }));
-			theCounter++;
-		});
-	}
-}
 
-attatchEvents();
-
-
-$('.ajaxableLink').on('click', function(e){
+$(document).on('click', '.ajaxableLink', function(e){
 	e.preventDefault();
 
 	$.get(this.href, function( data ){
@@ -27,8 +12,15 @@ $('.ajaxableLink').on('click', function(e){
 		*/
 		data.data.layout = "layout_none.html";
 
+		/* Replace main template */
 		$(data.replaces).html( nunEnv.render( data.template, data.data) );
-		attatchEvents();
-	});
 
+		/* if there are partials */
+		if( data.partials ) {
+			/* replace them */
+			for ( i=0;i<data.partials.length;i++) {
+				$(data.partials[i].replaces).html( nunEnv.render( data.partials[i].template, data.partials[i].data ));
+			}
+		}
+	});
 });
