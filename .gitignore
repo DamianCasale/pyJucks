@@ -55,3 +55,12 @@ target/
 
 # virtual environment
 virt/
+
+# node modules
+node_modules/
+
+# for the mac
+.DS_store
+
+# dont include the compiled templates
+app/static/js/templates.js
