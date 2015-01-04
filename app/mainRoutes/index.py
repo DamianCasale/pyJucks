@@ -12,7 +12,7 @@ def index():
 				'template': 'page_index.html',
 				'replaces': '#theMainContent',
 				'data' : {
-					'title':		'Playing with Jinja & Nunjucks',
+					'title':		'Index : Playing with Jinja & Nunjucks',
 					'renderedBy':	'Flask and Jinja2',
 					'anEvent':		'Normal backend functionality',
 					'aCounter':		0

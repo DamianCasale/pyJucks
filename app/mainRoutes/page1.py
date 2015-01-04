@@ -12,7 +12,7 @@ def page1():
 				'template':	'page_page1.html',
 		    	'replaces':	'#theMainContent',
 		    	'data': {
-					'title':		'Playing with Jinja & Nunjucks',
+					'title':		'Page1 : Playing with Jinja & Nunjucks',
 					'renderedBy':	'Flask and Jinja2',
 					'anEvent':		'Normal backend functionality',
 					'aCounter':		0
