@@ -34,7 +34,3 @@ Before first run and after alteration, the templates must be compiled for use by
 ToDo :
 
 check and sort backwards browser compatibility
-
-add history.js (https://github.com/browserstate/history.js)
-
-
