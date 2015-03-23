@@ -1,22 +1,19 @@
 import json
 
 from flask import render_template, request, Response
-from app import app
+from app import app, celery
+from app.logic import my_logic
 
 @app.route('/')
 def index():
 
+	data = my_logic.delay()
 
 	pageInfo = {
 				'layout':	'layout_default.html',
 				'template': 'page_index.html',
 				'replaces': '#theMainContent',
-				'data' : {
-					'title':		'Index : Playing with Jinja & Nunjucks',
-					'renderedBy':	'Flask and Jinja2',
-					'anEvent':		'Normal backend functionality',
-					'aCounter':		0
-				},
+				'data' : data.get(),
 				'partials':[
 					{
 						'template': 'partial_navbar.html',

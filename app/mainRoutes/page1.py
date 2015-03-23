@@ -1,22 +1,21 @@
 import json
 
 from flask import render_template, request, Response
-from app import app
+from app import app, RpcConnection
+
+remote = RpcConnection("com.myCompany.MyLogic")
 
 @app.route('/page1')
 def page1():
 
+	data = remote.call("my_logic").result
 
+	print "DINGO :: %s" % data
 	pageInfo = {
 				'layout':	'layout_default.html',
 				'template':	'page_page1.html',
 		    	'replaces':	'#theMainContent',
-		    	'data': {
-					'title':		'Page1 : Playing with Jinja & Nunjucks',
-					'renderedBy':	'Flask and Jinja2',
-					'anEvent':		'Normal backend functionality',
-					'aCounter':		0
-				},
+		    	'data': data,
 				'partials':[
 					{
 						'template': 'partial_navbar.html',
@@ -42,3 +41,5 @@ def page1():
 								anEvent		= pageInfo['data']['anEvent'],
 								aCounter	= pageInfo['data']['aCounter'],
 								notification = pageInfo['partials'][0]['data']['notification'])
+
+remote.close()

@@ -25,6 +25,8 @@ nunjucks node module (npm install nunjucks) includes nunjucks-slim.js and the pr
 
 Before first run and after alteration, the templates must be compiled for use by nunjucks-slim on the front end using :
 
+    npm install nunjucks
+
     node nunjucks-compile app/templates/ > app/static/js/templates.js
 
 
