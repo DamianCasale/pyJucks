@@ -1,11 +1,13 @@
 import zerorpc
 
+from app.logic.site import getIndex, getPage1
+
 class my_logic(object):
 	def index(self):
-		return zerorpc.Client("tcp://127.0.0.1:11111").index()
+		return getIndex()
 
 	def page1(self):
-		return zerorpc.Client("tcp://127.0.0.1:11111").page1()
+		return getPage1()
 
 zServer = zerorpc.Server(my_logic())
 zServer.bind("tcp://0.0.0.0:11110")
