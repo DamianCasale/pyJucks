@@ -1,5 +1,7 @@
 import zerorpc
 
+from app.data.models.user import User
+
 class my_data(object):
 
     def index(self):
@@ -11,10 +13,15 @@ class my_data(object):
         }
 
     def page1(self):
+
+        userlist = []
+        for user in User.objects:
+            userlist.append(user.email)
+
         return {
             'title':		'Page1 : Playing with Jinja & Nunjucks',
-            'renderedBy':	'Flask and Jinja2 via ZeroMQ',
-            'anEvent':		'Normal backend From DATA',
+            'renderedBy':  'Flask and Jinja2 via ZeroMQ',
+            'anEvent':		userlist,
             'aCounter':		0
         }
 
