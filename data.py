@@ -1,24 +1,23 @@
-import time
-from app import PyRpc
+import zerorpc
 
-def my_data():
-    print "I am data"
-    return {
-					'title':		'Page1 : Playing with Jinja & Nunjucks',
-					'renderedBy':	'Flask and Jinja2',
-					'anEvent':		'Normal backend functionality',
-					'aCounter':		0
-				}
+class my_data(object):
 
-myRpc = PyRpc("com.myCompany.MyApplication2")
+    def index(self):
+        return {
+            'title':		'Index : Playing with Jinja & Nunjucks',
+            'renderedBy':	'Flask and Jinja2 via ZeroMQ',
+            'anEvent':		'Normal backend From DATA',
+            'aCounter':		0
+        }
 
+    def page1(self):
+        return {
+            'title':		'Page1 : Playing with Jinja & Nunjucks',
+            'renderedBy':	'Flask and Jinja2 via ZeroMQ',
+            'anEvent':		'Normal backend From DATA',
+            'aCounter':		0
+        }
 
-myRpc.publishService(my_data)
-myRpc.start()
-
-try:
-    while True:
-        time.sleep(1)
-
-except KeyboardInterrupt:
-    myRpc.stop()
+zServer = zerorpc.Server(my_data())
+zServer.bind("tcp://0.0.0.0:11111")
+zServer.run()

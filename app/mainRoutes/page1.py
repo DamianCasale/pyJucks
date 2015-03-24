@@ -1,16 +1,18 @@
 import json
 
 from flask import render_template, request, Response
-from app import app, RpcConnection
-
-remote = RpcConnection("com.myCompany.MyLogic")
+from app import app
+from app.data.site import getPage1
 
 @app.route('/page1')
 def page1():
 
-	data = remote.call("my_logic").result
+	try:
+		data = getPage1()
 
-	print "DINGO :: %s" % data
+	except Exception, e:
+		return "Error Getting Page 1 Data : %s"%e,500
+
 	pageInfo = {
 				'layout':	'layout_default.html',
 				'template':	'page_page1.html',
@@ -26,11 +28,11 @@ def page1():
 					}
 				]}
 
-
 	if request.is_xhr:
 		pageInfo['data']['renderedBy']					= 'Nunjucks';
 		pageInfo['data']['anEvent']						= 'Replaced in browser';
 		pageInfo['partials'][0]['data']['notification'] = 'page 1 from front';
+
 		return Response( json.dumps(pageInfo), mimetype='text/json')
 
 	else: 
@@ -41,5 +43,3 @@ def page1():
 								anEvent		= pageInfo['data']['anEvent'],
 								aCounter	= pageInfo['data']['aCounter'],
 								notification = pageInfo['partials'][0]['data']['notification'])
-
-remote.close()

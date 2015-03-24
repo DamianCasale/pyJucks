@@ -1,21 +1,12 @@
-import time
-from app import PyRpc, RpcConnection
+import zerorpc
 
-remote = RpcConnection("com.myCompany.MyApplication2")
+class my_logic(object):
+	def index(self):
+		return zerorpc.Client("tcp://127.0.0.1:11111").index()
 
-def my_logic():
-    print "I am logic"
-    data = remote.call("my_data").result
-    return data
+	def page1(self):
+		return zerorpc.Client("tcp://127.0.0.1:11111").page1()
 
-myRpc = PyRpc("com.myCompany.MyApplication")
-
-myRpc.publishService(my_logic)
-myRpc.start()
-
-try:
-    while True:
-        time.sleep(1)
-
-except KeyboardInterrupt:
-    myRpc.stop()
+zServer = zerorpc.Server(my_logic())
+zServer.bind("tcp://0.0.0.0:11110")
+zServer.run()
