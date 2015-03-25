@@ -4,7 +4,10 @@ from flask import render_template, request, Response
 from app import app
 from app.data.site import getPage1
 
+from flask.ext.login import login_required
+
 @app.route('/page1')
+@login_required
 def page1():
 
 	try:
