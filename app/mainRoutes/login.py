@@ -1,6 +1,6 @@
 import json
 
-from app import app, login_manager
+from app import app
 
 from flask import Flask, request, render_template, redirect, url_for, flash
 from flask.ext.login import (LoginManager, current_user, login_required,
@@ -8,11 +8,6 @@ from flask.ext.login import (LoginManager, current_user, login_required,
                             confirm_login, fresh_login_required)
 
 from app.data import user
-
- 
-@login_manager.user_loader
-def load_user(id):
-    return user.getLoginUserObject(id)
  
  
 @app.route("/secret")

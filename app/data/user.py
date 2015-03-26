@@ -1,6 +1,12 @@
 import zerorpc
 import json
 
+from app import login_manager
+
+@login_manager.user_loader
+def load_user(id):
+    return getLoginUserObject(id)
+
 class loginUserObject():
 
 	def __init__(self,username):
@@ -8,6 +14,9 @@ class loginUserObject():
 
 	def is_authenticated(self):
 		return self.is_authenticated
+
+	def is_anonymous(self):
+		return self.is_anonymous
 
 	def get_id(self):
 		return self.data['email']
