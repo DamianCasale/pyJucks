@@ -1,13 +1,21 @@
 import zerorpc
 
-from app.logic.site import getIndex, getPage1
+from app.logic import site
+from app.logic import user
 
 class my_logic(object):
 	def index(self):
-		return getIndex()
+		return site.getIndex()
 
 	def page1(self):
-		return getPage1()
+		return site.getPage1()
+
+	def isValidUsername(self, username):
+		return user.isValidUsername(username)
+
+	def getUserData(self, username):
+		print "logic : %s"%user.getUserData(username)
+		return user.getUserData(username)
 
 zServer = zerorpc.Server(my_logic())
 zServer.bind("tcp://0.0.0.0:11110")

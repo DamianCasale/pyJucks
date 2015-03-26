@@ -6,28 +6,13 @@ from flask import Flask, request, render_template, redirect, url_for, flash
 from flask.ext.login import (LoginManager, current_user, login_required,
                             login_user, logout_user, UserMixin,
                             confirm_login, fresh_login_required)
- 
-class User(UserMixin):
-    def __init__(self, name, id, active=True):
-        self.name = name
-        self.id = id
-        self.active = active
- 
-    def is_active(self):
-        return self.active
 
-USERS = {
-    1: User(u"Damian", 1),
-    2: User(u"Damian2", 2, False)
-}
- 
-USER_NAMES = dict((u.name, u) for u in USERS.itervalues())
- 
+from app.data import user
 
  
 @login_manager.user_loader
 def load_user(id):
-    return USERS.get(int(id))
+    return user.getLoginUserObject(id)
  
  
 @app.route("/secret")
@@ -40,9 +25,9 @@ def secret():
 def login():
     if request.method == "POST" and "username" in request.form:
         username = request.form["username"]
-        if username in USER_NAMES:
+        if user.isValidUsername(username):
             remember = request.form.get("remember", "no") == "yes"
-            if login_user(USER_NAMES[username], remember=remember):
+            if login_user(user.getLoginUserObject(username), remember=remember):
                 flash("Logged in!")
                 return redirect(request.args.get("next") or url_for("index"))
             else:

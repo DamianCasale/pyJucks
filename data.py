@@ -25,6 +25,12 @@ class my_data(object):
             'aCounter':		0
         }
 
+    def isValidUsername(self,username):
+        return User.isValidUsername(username)
+
+    def getUserData(self,username):
+        return User.getUserData(username)
+
 zServer = zerorpc.Server(my_data())
 zServer.bind("tcp://0.0.0.0:11111")
 zServer.run()
