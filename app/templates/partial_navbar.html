@@ -1,7 +1,7 @@
 {% block navbar %}
-Ajaxable links : <a class="ajaxableLink" href="/">Home</a>&nbsp|&nbsp<a class="ajaxableLink" href="/page1">Page 1</a>
-<br>
-Non Ajaxable links : <a href="/">Home</a>&nbsp|&nbsp<a href="/page1">Page 1</a>
-<br>
-Nav Notification : {{ notification }}
+{% if user.is_active() %}
+	{% include 'partial_navbar_auth.html' %}
+{% else %}
+	{% include 'partial_navbar_noauth.html' %}
+{% endif %}
 {% endblock %}

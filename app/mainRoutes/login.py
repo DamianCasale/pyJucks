@@ -2,7 +2,7 @@ import json
 
 from app import app
 
-from flask import Flask, request, render_template, redirect, url_for, flash
+from flask import Flask, request, render_template, redirect, url_for, flash, session
 from flask.ext.login import (LoginManager, current_user, login_required,
                             login_user, logout_user, UserMixin,
                             confirm_login, fresh_login_required)
@@ -18,18 +18,19 @@ def secret():
  
 @app.route("/login", methods=["GET", "POST"])
 def login():
+
     if request.method == "POST" and "username" in request.form:
         username = request.form["username"]
         if user.isValidUsername(username):
             remember = request.form.get("remember", "no") == "yes"
-            if login_user(user.getLoginUserObject(username), remember=remember):
+            if login_user(user.getUserLogin(username,'password'), remember=remember):
                 flash("Logged in!")
                 return redirect(request.args.get("next") or url_for("index"))
             else:
                 flash("Sorry, but you could not log in.")
         else:
             flash(u"Invalid username.")
-    return render_template("login.html",layout = 'layout_default.html')
+    return render_template("login.html",layout = 'layout_default.html', user=current_user)
  
  
 @app.route("/reauth", methods=["GET", "POST"])

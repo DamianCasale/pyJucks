@@ -3,7 +3,7 @@ import os
 from flask import Flask
 from jinja2 import ChoiceLoader, FileSystemLoader
 
-from flask.ext.login import LoginManager
+from flask.ext.login import LoginManager, current_user
 from flask.ext.acl import ACLManager
 
 app = Flask(__name__)

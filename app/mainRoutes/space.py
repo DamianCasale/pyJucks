@@ -2,49 +2,47 @@ import json
 
 from flask import render_template, request, Response, session
 from app import app
-from app.data.site import getPage1
+from app.data.space import getUserSpaces
 
 from flask.ext.login import login_required, current_user
 
-@app.route('/page1')
+@app.route('/space')
 @login_required
-def page1():
+def space():
 
 	try:
-		data = getPage1()
-
+		spaces = json.loads(getUserSpaces(current_user.get_id()))
+		print "SPACES %s"% spaces
 	except Exception, e:
-		return "Error Getting Page 1 Data : %s"%e,500
+		return "Error Getting space Data : %s"%e,500
 
 	pageInfo = {
 				'layout':	'layout_default.html',
-				'template':	'page_page1.html',
+				'template':	'page_space.html',
 		    	'replaces':	'#theMainContent',
-		    	'data': data,
+		    	'spaces': spaces,
 				'user': current_user.to_json(),
 				'partials':[
 					{
 						'template': 'partial_navbar.html',
 						'replaces': '#theNavbar',
 						'data' : {
-							'notification':'page 1 from back'
+							'notification':'space from back'
 						}
 					}
 				]}
 
 	if request.is_xhr:
+		pageInfo['data'] = {}
 		pageInfo['data']['renderedBy']					= 'Nunjucks';
 		pageInfo['data']['anEvent']						= 'Replaced in browser';
-		pageInfo['partials'][0]['data']['notification'] = 'page 1 from front';
+		pageInfo['partials'][0]['data']['notification'] = 'space from front';
 
 		return Response( json.dumps(pageInfo), mimetype='text/json')
 
 	else: 
 		return render_template( pageInfo['template'],
 								layout		= pageInfo['layout'],
-								user 		= current_user,
-								title		= pageInfo['data']['title'],
-								renderedBy	= pageInfo['data']['renderedBy'],
-								anEvent		= pageInfo['data']['anEvent'],
-								aCounter	= pageInfo['data']['aCounter'],
+								user		= current_user,
+								spaces		= spaces,
 								notification = pageInfo['partials'][0]['data']['notification'])

@@ -1,6 +1,7 @@
 import zerorpc
 
 from app.data.models.user import User
+from app.data.models.space import Space
 
 class my_data(object):
 
@@ -28,8 +29,14 @@ class my_data(object):
     def isValidUsername(self,username):
         return User.isValidUsername(username)
 
-    def getUserData(self,username):
-        return User.getUserData(username)
+    def getUserData(self,userId):
+        return User.getUserData(userId)
+
+    def getUserSpaces(self,userId):
+        return Space.getUserSpaces(userId)
+
+    def getUserLogin(self,username,password):
+        return User.getUserLogin(username,password)
 
 zServer = zerorpc.Server(my_data())
 zServer.bind("tcp://0.0.0.0:11111")

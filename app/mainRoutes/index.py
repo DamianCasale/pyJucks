@@ -1,12 +1,12 @@
 import json
 
-from flask import render_template, request, Response
+from flask import render_template, request, Response, session
 from app import app
 from app.data.site import getIndex
-
+from flask.ext.login import current_user
 @app.route('/')
 def index():
-
+	
 	try:
 		data = getIndex()
 
@@ -18,6 +18,7 @@ def index():
 				'template': 'page_index.html',
 				'replaces': '#theMainContent',
 				'data': data,
+				'user': current_user.to_json(),
 				'partials':[
 					{
 						'template': 'partial_navbar.html',
@@ -38,6 +39,7 @@ def index():
 	else:
 		return render_template( pageInfo['template'], 
 								layout		= pageInfo['layout'],
+								user		= current_user,
 								title		= pageInfo['data']['title'],
 								renderedBy	= pageInfo['data']['renderedBy'],
 								anEvent		= pageInfo['data']['anEvent'],
